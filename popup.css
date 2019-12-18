@@ -1,0 +1,64 @@
+body {
+    width: 350px;
+}
+
+.search {
+    padding: 5px;
+}
+
+button {
+    height: 30px;
+    width: fit-content;
+    outline: none;
+    background-color: #234652;
+    color: white;
+    font-family: Georgia;
+}
+
+input {
+    height: 24px;
+    width: 250px;
+    font-family: Arial;
+    padding-left: 5px;
+}
+
+.overlay {
+    background-color: lightgray;
+    z-index: 1;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 335px;
+    height: 50px;
+    opacity: .80;
+    text-align: center;
+    padding: 5px;
+    transition: ease-in .5s;
+}
+
+.overlay.hide {
+    opacity: 0;
+    z-index: -1;
+}
+
+.overlay div {
+    padding-top: 10px;
+    font-size: 30px;
+    font-weight: bolder;
+    color: #234652;
+}
+
+.overlay .fa-sync {    
+    -webkit-animation: spin 2s infinite linear;
+    animation: spin 2s infinite linear;
+}
+
+@-webkit-keyframes spin {
+    0%  {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(360deg);}   
+}
+
+svg {
+    stroke: white;
+    stroke-width: 0.1;
+  }

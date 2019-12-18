@@ -1,0 +1,40 @@
+ <!DOCTYPE html>
+  <html>
+    <head>      
+      <script src="https://kit.fontawesome.com/f218e6b032.js" crossorigin="anonymous"></script>
+      <script src="popup.js"></script>
+      <link rel="stylesheet" href="popup.css">
+    </head>
+    <body>
+        <div class="search">
+            <input id="search-bar" />
+            <button id="search-button">Search</button>
+            <div class="overlay hide">
+                <div>
+                    <i class="fas fa-sync"></i>
+                </div>
+            </div>
+        </div>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+              <path id="piePiece" d="M 42.2,78.9 46.1,64.4 Q 50,65 53.88,64.48 L 57.7,78.9 Q 50,80 42.2,78.9Z" />
+            </defs>
+            <use xlink:href="#piePiece" fill="#2D8633"/>
+            <use xlink:href="#piePiece" transform="rotate(30,50,50)" fill="#236467"/>
+            <use xlink:href="#piePiece" transform="rotate(60,50,50)" fill="#2E4172"/>
+            <use xlink:href="#piePiece" transform="rotate(90,50,50)" fill="#413075"/>
+            <use xlink:href="#piePiece" transform="rotate(120,50,50)" fill="#592A71"/>
+            <use xlink:href="#piePiece" transform="rotate(150,50,50)" fill="#8A2E60"/>
+            <use xlink:href="#piePiece" transform="rotate(180,50,50)" fill="#AA3C39"/>
+            <use xlink:href="#piePiece" transform="rotate(210,50,50)" fill="#AA6D39"/>
+            <use xlink:href="#piePiece" transform="rotate(240,50,50)" fill="#AA8539"/>
+            <use xlink:href="#piePiece" transform="rotate(270,50,50)" fill="#AA9739"/>
+            <use xlink:href="#piePiece" transform="rotate(300,50,50)" fill="#A9AA39"/>
+            <use xlink:href="#piePiece" transform="rotate(330,50,50)" fill="#A9AA39"/>
+          </svg>
+    </body>
+
+    <!-- <script>
+            chrome.tabs.executeScript(null,{file:"contentscript.js"})
+        </script> -->
+</html>

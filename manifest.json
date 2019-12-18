@@ -1,0 +1,30 @@
+ {
+    "name": "OrangeBerry",
+    "version": "1.0",
+    "description": "Build an Extension!",
+    "manifest_version": 2,
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },    
+    "permissions": [
+        "storage",
+        "declarativeContent",
+        "tabs",
+        "*://services.cognitoforms.com/*",
+        "*://cognitoforms.com/*"        
+    ],
+    "page_action": {        
+        "default_title": "OrangeBerry",
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [
+        {
+          "matches": ["<all_urls>"],
+          "css": [],
+          "js": ["model.js", "jquery.js"],
+          "all_frames": true
+        }
+    ],
+    "content_security_policy": "script-src 'self' https://kit.fontawesome.com; object-src 'self'"
+  }
