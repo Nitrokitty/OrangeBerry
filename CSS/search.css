@@ -1,6 +1,3 @@
-body {
-    width: 350px;
-}
 
 .search {
     padding: 5px;
@@ -11,16 +8,17 @@ button {
     width: fit-content;
     outline: none;
     background-color: #234652;
-    color: white;
-    font-family: Georgia;
+    color: white;   
+    font-family: Arial; 
 }
 
-input {
+input#search-bar {
     height: 24px;
-    width: 250px;
-    font-family: Arial;
+    width: 77%;
     padding-left: 5px;
 }
+
+/* Search Overlay */
 
 .overlay {
     background-color: lightgray;
@@ -34,11 +32,6 @@ input {
     text-align: center;
     padding: 5px;
     transition: ease-in .5s;
-}
-
-.overlay.hide {
-    opacity: 0;
-    z-index: -1;
 }
 
 .overlay div {
@@ -57,8 +50,3 @@ input {
     0%  {-webkit-transform: rotate(0deg);}
     100% {-webkit-transform: rotate(360deg);}   
 }
-
-svg {
-    stroke: white;
-    stroke-width: 0.1;
-  }

@@ -1,0 +1,57 @@
+@import "../CSS/caretMenu.css";
+@import "../CSS/colorSelect.css";
+@import "../CSS/popup.css";
+@import "../CSS/search.css";
+@import "../CSS/toggle.css";
+
+/* Popup */
+
+h1, h2, h3, h4 {
+    font-family: Georgia; 
+}
+
+.body {    
+    border-width: 5px;
+    border-color: black;
+    background-color: white;
+    font-family: Arial;
+}
+
+.hide {
+    opacity: 0 !important;
+    z-index: -1 !important;
+}
+
+.validation .navigation {
+    text-align: center;
+}
+
+.validation {
+    margin-bottom: 5px;
+    margin-left: 5px;
+    margin-top: -20px;
+    padding-bottom: 10px;    
+}
+
+.validation .navigation .fas:first-child {
+    padding-right: 50px;        
+    font-size: 30px;
+    min-height: 50px;
+    padding: 10px;
+    margin: 0 15px 0 0;
+}
+
+.validation .navigation .fas {
+    padding-right: 50px;    
+    padding-left: 50px;    
+    font-size: 30px;
+    min-height: 50px;
+    padding: 10px;
+    margin: 0 15px 0 15px;
+}
+
+.validation .navigation .fas:hover {
+    padding: 0px;
+    font-size: 35px;
+    color: lightsalmon;
+}
