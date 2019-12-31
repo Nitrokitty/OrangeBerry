@@ -91,9 +91,9 @@ function loaded () {
         });
 
         // Validation GOTO
-        $(".validation [class*='fa-angle']").on("click", function(event){
+        $(".validation .navigation [class*='fa-angle']").on("click", function(event){
             post("goto", { selector: event.currentTarget.getAttribute("data-goto")});
-        });
+        });        
 
     })();
 }
@@ -128,18 +128,32 @@ function post(message, data)
 
 
 chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        console.log("popup.js")
-        console.log("message received")
-        var fields = $.parseJSON(request.data.fields);        
-
+    function(request, sender, sendResponse) {        
+        if(request.data.by != "OrangeBerry" && request.msg != "searchComplete")
+            return;
+        
+            var fields = $.parseJSON(request.data.fields);
         $(".overlay").addClass("hide")
     }
 );
 
-window.addEventListener("message", function(event) { 
-    console.log("popup.js")
-    console.log(event)
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {   
+        if(request.data.by != "OrangeBerry" && request.msg != "validationComplete")
+            return;
+            
+        var results = $.parseJSON(request.data.results);
+        var index = request.data.index;
+
+        console.log("validationComplete")
+        console.log(results)
+        console.log(index)
+
+        recreateTable(results, index);
+    }
+);
+
+window.addEventListener("message", function(event) {     
     if(event.data.source !== window.origin || event.data.by !== "OrangeBerry")
         return;
 
@@ -147,3 +161,50 @@ window.addEventListener("message", function(event) {
 
     $(".overlay").addClass("hide")
   }, false);
+
+
+function recreateTable(validationResults, activeIndex) {
+    var $table = $(".validation .validation-results tbody");
+    
+    if(validationResults){        
+        $table.children().toArray().forEach(function(child) {        
+            child.remove();
+        });
+
+        var $header = $("<tr class='header'></tr>")
+        $header.append($("<th class='item-number'>#</th>"))
+        $header.append($("<th class='property'>Property</th>"))
+        $header.append($("<th class='exception'>Exception</th>"))
+        $table.append($header);
+
+        var currentIndex = 0;
+        Object.keys(validationResults).forEach(function(elementId){
+            validationResults[elementId].forEach(function(result){
+                if(!result.FormattedValue)
+                {
+                    var $row = $("<tr class='" + (activeIndex === currentIndex? "selected" : "")+ "' data-uuid='" + elementId + "' data-index='" + currentIndex + "'></tr>");
+                    $row.append($("<td class='item-number'>" + (++currentIndex) + "</td>"));
+                    $row.append($("<td class='property'>" + result.Property + "</td>"));
+                    $row.append($("<td class='exception'>" + result.ExceptionMessage + "</td>"));
+                    $table.append($row);
+                }
+            });        
+        });
+
+        setTimeout(function(){
+            // Validation Select
+            $(".validation table tr:not('.header')").on("click", function(event){                                
+                post("goto", { uuid: event.currentTarget.getAttribute("data-uuid"), index: event.currentTarget.getAttribute("data-index") });
+            });
+        });
+    }
+    else {
+        $table.find(".selected").removeClass("selected");
+        $table.find("[data-index='" + activeIndex + "']").addClass("selected");
+    }
+
+    
+    $(".validation .navigation .index").text(activeIndex + 1);
+}
+
+

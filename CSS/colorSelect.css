@@ -4,8 +4,9 @@
     display: inline-block;
 }
 
-.color-select .color:hover {
+.color-select .color:hover:not(.selected) {
     box-shadow: 0px 0px 5px 5px lightsalmon;
+    cursor: pointer;
 }
 
 .color-select .color.selected {

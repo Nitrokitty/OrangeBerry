@@ -3,8 +3,25 @@
 @import "../CSS/popup.css";
 @import "../CSS/search.css";
 @import "../CSS/toggle.css";
+@import "../CSS/table.css";
 
 /* Popup */
+
+table tr th.property {
+    min-width: 30px;
+}
+
+table tr th.item-number {
+    min-width: 20px;
+}
+
+table tr td.item-number {
+    text-align: center;
+}
+
+table tr td.property {
+    text-transform: capitalize;
+}
 
 h1, h2, h3, h4 {
     font-family: Georgia; 
@@ -54,4 +71,18 @@ h1, h2, h3, h4 {
     padding: 0px;
     font-size: 35px;
     color: lightsalmon;
+}
+
+.validation .navigation .fas.fa-angle-right {
+    padding-left: 30px;
+}
+
+.validation .navigation .fas.fa-angle-left {
+    padding-right: 20px;
+}
+
+.validation .navigation .index {
+    padding: 17px 0px 5px 0px;
+    position: relative;
+    bottom: 6px;
 }

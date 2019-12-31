@@ -69,16 +69,19 @@ function init() {
 
     chrome.runtime.onMessage.addListener(
         function(request) {
-            if (request.msg === "goto") {
-                var results = OrangeBerry.Cognito.validate(request.data.selector);
-                if(results)
-                {
-                    console.log("has results")                    
-                    focusInvalidElements(results, request.data.selector, OrangeBerry.Cognito.currentElement || 0);
-                }
-                else
-                    console.log("doesnt have results")
+            if (request.msg !== "goto") 
+                return;
+            
+            if(request.data.uuid && request.data.index)
+            {
+                OrangeBerry.Cognito.focusUuid(request.data.uuid);
+                validationCallback(null, request.data.index);
+                return;
             }
+
+            var results = OrangeBerry.Cognito.validate(request.data.selector);
+            if(results)                            
+                focusInvalidElements(results, request.data.selector, OrangeBerry.Cognito.currentElement || 0);            
         }
     );
 }
@@ -115,6 +118,20 @@ var focusInvalidElements = function(results, _goto, currentElement)
         return;
     
     OrangeBerry.Cognito.focusUuid(resultKeys[index]);
+
+    validationCallback(results, index);
+}
+
+var validationCallback = function(results, index)
+{
+    chrome.runtime.sendMessage({
+        msg: "validationComplete", 
+        data: {
+            by: "OrangeBerry",
+            results: JSON.stringify(results),
+            index: index
+        }
+    }); 
 }
 
 var normalizeStr = function(str)
@@ -168,7 +185,7 @@ var fieldSearch = function (search, fields, exactMatch)
         if(field.ChildType)
         {
             OrangeBerry.Search.parentNames.push(internalName);
-            fieldSearch(search, field.ChildType().Fields());
+            fieldSearch(search, field.ChildType.Fields);
             OrangeBerry.Search.parentNames.pop();
         }
     });

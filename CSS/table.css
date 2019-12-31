@@ -1,0 +1,39 @@
+table {
+    border-width: 2px;
+    border-style: none none none solid;
+    border-color: lightgray;
+    border-collapse: collapse;
+}
+
+table tr:first-child {
+    background-color: #234652;
+    color: white;
+    font-family: Arial;    
+    text-align: left; 
+    text-transform: uppercase;   
+    font-size: 14px;
+}
+
+table tr:last-child {
+    border-bottom: lightgray;
+}
+
+table tr.selected {
+    background-color: lightsalmon;
+}
+
+table tr th {
+    padding: 10px 0px 10px 10px;
+}
+
+table td {
+    padding: 5px 5px 5px 10px;
+    font-size: 13px;
+    color: #141414;
+}
+
+table.selectable tr:not(:first-child):hover {
+    box-shadow: 0px 0px 5px 5px lightsalmon;
+    cursor: pointer;
+}
+
