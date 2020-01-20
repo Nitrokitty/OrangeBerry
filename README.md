@@ -3,7 +3,7 @@
 ![enter image description here](https://github.com/Nitrokitty/OrangeBerry/blob/master/Images/logo.png?raw=true)
 
 ## How to install
-- Download [OrangeBerry.crx](https://github.com/Nitrokitty/OrangeBerry/blob/master/OrangeBerry.crx) file
+- Download [OrangeBerry.crx](https://github.com/Nitrokitty/OrangeBerry/raw/master/OrangeBerry.crx) file
 - Open Chrome
 - In tab, goto [chrome://extensions](chrome://extensions)
 - Drag the OrangeBerry.crx file onto the page
