@@ -22,7 +22,7 @@
               <i class="fas fa-sync"></i>
             </div>
           </div>
-          <div class="caret-menu closed">
+          <div class="sub-caret-menu-1 caret-menu closed">
             <div class="button">
               <h4>Advanced</h4><i class="fas fa-angle-right"></i>
             </div>
@@ -87,23 +87,47 @@
           <h4>Validation</h4><i class="fas fa-angle-right"></i>
         </div>
         <div id="target-validation" class="caret-menu-target">
-          <div class="navigation">
-            <i class="fas fa-angle-double-left" data-goto="first-error" aria-hidden="true"></i>
-            <i class="fas fa-angle-left" data-goto="previous-error" aria-hidden="true"></i>
-            <span class="index"></span>
-            <i class="fas fa-angle-right" data-goto="next-error" aria-hidden="true"></i>
-            <i class="fas fa-angle-double-right" data-goto="last-error" aria-hidden="true"></i>
+          <div class="navigation">            
+              <i class="validating fas fa-sync"></i>
+              <div class="arrows">
+                <i class="fas fa-angle-left" data-goto="previous-error" aria-hidden="true"></i>
+                <span class="index"></span>
+                <i class="fas fa-angle-right" data-goto="next-error" aria-hidden="true"></i>              
+                <i class="re-validate fas fa-sync"></i>
+              </div>
+          <div>
+        </div>
+        <div class="validation-results">
+          <div class="fields empty" style="display: none;">
+            <i class="fas fa-check-circle"></i> There are no field exceptions.
           </div>
-          <div class="validation-results">
-            <table class="selectable">              
-              <tbody></tbody>            
+          <table class="fields selectable">              
+            <tbody></tbody>                        
+          </table>
+          <div class="form empty" style="display: none;">
+            <i class="fas fa-check-circle"></i> There are no form property exceptions.
+          </div>
+          <table class="form">              
+            <tbody></tbody>            
+          </table>
+          <!-- <div class="validation-results">
+            <div class="fields empty" style="display: none;">
+              <i class="fas fa-check-circle"></i> There are no field exceptions.
+            </div>
+            <table class="fields selectable">              
+              <tbody><tr class="header"><th class="item-number">#</th><th class="property">Property</th><th class="exception">Exception</th></tr><tr class="selected" data-uuid="1" data-index="0"><td class="item-number">1</td><td class="property">readOnly</td><td class="exception">No field 'NOOB' exists in 'Form'</td></tr><tr class="" data-uuid="3" data-index="1"><td class="item-number">2</td><td class="property">readOnly</td><td class="exception">No field 'NOOB' exists in 'Form'</td></tr><tr class="" data-uuid="5" data-index="2"><td class="item-number">3</td><td class="property">readOnly</td><td class="exception">No field 'NOOB' exists in 'RepeatingSection'</td></tr><tr class="" data-uuid="6" data-index="3"><td class="item-number">4</td><td class="property">readOnly</td><td class="exception">No field 'NOOB' exists in 'Form'</td></tr></tbody>                        
             </table>
-          </div>          
-          
-       
+            <div class="form empty" style="">
+              <i class="fas fa-check-circle"></i> There are no form exceptions.
+            </div>
+            <table class="form">              
+              <tbody style="display: none;"><tr class="header"><th class="item-number">#</th><th class="property">Property</th><th class="exception">Exception</th></tr></tbody>            
+            </table>            
+          </div> -->
         </div>
       </div>
     </div>
+  </div>
   </div>
 </body>
 

@@ -23,6 +23,7 @@ function loaded () {
     OrangeBerry.include = {}
     OrangeBerry.include.internalNames = true;
     OrangeBerry.include.labels = true;
+    OrangeBerry.clear = true;
 
     $(".color-select .color").toArray().forEach(function(colorElement){
         var color = colorElement.getAttribute("data-color");
@@ -50,10 +51,11 @@ function loaded () {
             var target = $(event.currentTarget).parent();        
             target.find(".button i")[0].remove();
             var icon = null;
-    
+            var isOpening = false;
             if(target.hasClass("closed")){
                 target.removeClass("closed");            
                 icon = $("<i class='fas fa-angle-down'></i>")[0];            
+                isOpening = true;
             }
             else {
                 target.addClass("closed");            
@@ -61,6 +63,10 @@ function loaded () {
             }
     
             target.find(".button")[0].appendChild(icon);
+
+            var tableRows = $(".validation table tbody tr");
+            if(isOpening && target[0].id === "menu-validation" && tableRows.length === 0)
+                validate();
         });
 
         // Color Select
@@ -88,13 +94,17 @@ function loaded () {
          // Toggle Clear
          $(".clear input").on("change", function(event){
             OrangeBerry.clear = event.currentTarget.checked;
-        });
+        });               
 
         // Validation GOTO
         $(".validation .navigation [class*='fa-angle']").on("click", function(event){
-            post("goto", { selector: event.currentTarget.getAttribute("data-goto")});
+            validate(event.currentTarget.getAttribute("data-goto"));
         });        
 
+        // ReValidate
+        $(".validation .navigation .arrows .re-validate").on("click", function(event){
+            validate(null, true);
+        });   
     })();
 }
 
@@ -113,6 +123,22 @@ function search()
         include: OrangeBerry.include,
         clear: OrangeBerry.clear
     });       
+}
+
+function validate(selector, force)
+{
+    console.log("validating")
+    var $validation = $(".validation");
+    if($validation.hasClass("validating"))
+    {
+        console.log("already validating");
+        return;
+    }
+    $validation.addClass("validating");
+    $validation.find(".arrows .index")[0].style.display = "none";
+    $validation.find(".arrows .re-validate")[0].style.opacity = 0;
+
+    post("goto", { selector, force });    
 }
 
 function post(message, data)
@@ -150,6 +176,14 @@ chrome.runtime.onMessage.addListener(
         console.log(index)
 
         recreateTable(results, index);
+        setTimeout(function(){
+            var $validation = $(".validation");
+            $validation.removeClass("validating");            
+            $validation.find(".arrows .index")[0].style.display = "";
+            $validation.find(".arrows .re-validate")[0].style.opacity = 1;
+            var $arrows = $validation.find(".navigation .arrows");
+            $arrows[0].style.marginLeft = index || index === 0? (index >= 9? "24%" : "26%") : "28%";
+        });
     }
 );
 
@@ -162,23 +196,20 @@ window.addEventListener("message", function(event) {
     $(".overlay").addClass("hide")
   }, false);
 
-
 function recreateTable(validationResults, activeIndex) {
-    var $table = $(".validation .validation-results tbody");
+    var $fieldsTable = $(".validation .validation-results table.fields tbody");
+    var $formTable = $(".validation .validation-results table.form tbody");
     
-    if(validationResults){        
-        $table.children().toArray().forEach(function(child) {        
-            child.remove();
-        });
-
-        var $header = $("<tr class='header'></tr>")
-        $header.append($("<th class='item-number'>#</th>"))
-        $header.append($("<th class='property'>Property</th>"))
-        $header.append($("<th class='exception'>Exception</th>"))
-        $table.append($header);
+    if(validationResults){                
+        clearTable($fieldsTable);
+        clearTable($formTable);
+        
+        $fieldsTable.append(createTableHeader());
+        $formTable.append(createTableHeader());
 
         var currentIndex = 0;
         Object.keys(validationResults).forEach(function(elementId){
+            $table = elementId === "Form"? $formTable : $fieldsTable;
             validationResults[elementId].forEach(function(result){
                 if(!result.FormattedValue)
                 {
@@ -192,6 +223,9 @@ function recreateTable(validationResults, activeIndex) {
         });
 
         setTimeout(function(){
+            toggleEmptyMessage($fieldsTable);
+            toggleEmptyMessage($formTable);
+
             // Validation Select
             $(".validation table tr:not('.header')").on("click", function(event){                                
                 post("goto", { uuid: event.currentTarget.getAttribute("data-uuid"), index: event.currentTarget.getAttribute("data-index") });
@@ -199,12 +233,44 @@ function recreateTable(validationResults, activeIndex) {
         });
     }
     else {
-        $table.find(".selected").removeClass("selected");
-        $table.find("[data-index='" + activeIndex + "']").addClass("selected");
+        if(activeIndex < 0)
+            return;
+        $fieldsTable.find(".selected").removeClass("selected");
+        $fieldsTable.find("[data-index='" + activeIndex + "']").addClass("selected");
     }
 
-    
+    activeIndex = typeof activeIndex !== "number"? parseInt(activeIndex) : activeIndex;
     $(".validation .navigation .index").text(activeIndex + 1);
 }
 
+function toggleEmptyMessage($table)
+{
+    var showMessage = !$table.find("tr:not(.header)").length;
+    var messageClass = $table.parent().hasClass("form")? "form" : "fields";
+    var $message = $(".validation .validation-results .empty."+ messageClass);
 
+    if(showMessage){
+        $table[0].style.display = "none";
+        $message[0].style.display = "";
+    }
+    else {
+        $table[0].style.display = "";
+        $message[0].style.display = "none";
+    }
+}
+
+function clearTable($table)
+{
+    $table.children().toArray().forEach(function(child) {        
+        child.remove();
+    });
+}
+
+function createTableHeader()
+{
+    var $header = $("<tr class='header'></tr>");
+    $header.append($("<th class='item-number'>#</th>"));
+    $header.append($("<th class='property'>Property</th>"));
+    $header.append($("<th class='exception'>Exception</th>"));
+    return $header;
+}

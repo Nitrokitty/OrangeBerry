@@ -1,21 +1,28 @@
 table {
-    border-width: 2px;
-    border-style: none none none solid;
-    border-color: lightgray;
     border-collapse: collapse;
 }
 
 table tr:first-child {
-    background-color: #234652;
+    background-color: darkred;
+    opacity: .7;
     color: white;
-    font-family: Arial;    
-    text-align: left; 
-    text-transform: uppercase;   
-    font-size: 14px;
+    font-family: Candara;
+    text-align: left;    
+    font-size: 16px;
 }
 
-table tr:last-child {
-    border-bottom: lightgray;
+tr:not(.header) {
+    border-color: lightgray;
+    border-style: solid;
+    border-width: 0px 0 1px 0;
+}
+
+tr >:not(:first-child) {
+    padding-left: 5px;
+}
+
+table tbody >tr:last-child {
+    border-bottom: solid lightgray;
 }
 
 table tr.selected {
@@ -27,7 +34,7 @@ table tr th {
 }
 
 table td {
-    padding: 5px 5px 5px 10px;
+    padding: 10px 5px 10px 0px;
     font-size: 13px;
     color: #141414;
 }

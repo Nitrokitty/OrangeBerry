@@ -7,9 +7,10 @@ button {
     height: 30px;
     width: fit-content;
     outline: none;
-    background-color: #234652;
+    background-color: gray;
     color: white;   
-    font-family: Arial; 
+    font-family: Candara; 
+    border: none;
 }
 
 input#search-bar {

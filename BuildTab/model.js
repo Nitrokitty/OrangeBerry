@@ -79,7 +79,7 @@ function init() {
                 return;
             }
 
-            var results = OrangeBerry.Cognito.validate(request.data.selector);
+            var results = OrangeBerry.Cognito.validate(request.data.selector, request.data.force);
             if(results)                            
                 focusInvalidElements(results, request.data.selector, OrangeBerry.Cognito.currentElement || 0);            
         }
@@ -111,11 +111,9 @@ var focusInvalidElements = function(results, _goto, currentElement)
         index = _goto === "next-error"? index + 1 : index - 1;
     }
         
-    if(index === null || index < 0)
-        index = 0;
+    if(index === null || index < 0 || index >= resultKeys.length - 1 || resultKeys.length <= index)
+        index = 0;    
 
-    if(resultKeys.length <= index || (resultKeys.length === 1 && index >= resultKeys.length - 2))
-        return;
     
     OrangeBerry.Cognito.focusUuid(resultKeys[index]);
 
@@ -320,9 +318,9 @@ class CognitoObject
         this._set("$(\"[data-uuid='" + uuid +"']\").focus()");
     }
 
-    validate(goto)
+    validate(goto, force)
     {        
-        if(!this.__validation){
+        if(!this.__validation || force) {
             var validateCall = `var newForm = Cognito.Forms.model.currentForm;
             var serializedNewForm = Cognito.serialize(newForm);
 

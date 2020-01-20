@@ -4,7 +4,7 @@
     margin: 0px 9px 20px 1px; 
     border-width: 5px;
     border-color: white white white #234652;
-    border-style: solid;  
+    border-style: none none none solid;  
 }
 
 .caret-menu .button:first-child {    
@@ -60,4 +60,28 @@
     font-size: 15px;
     margin: 0 0 0 10px;
     display: inline-block;
+}
+
+/* Open Menu */
+.caret-menu:not(.closed) > .button {
+    background-color: #234652;
+    color: white;
+    opacity: .9;
+    border-color: #234652 #234652 #234652 lightgray;
+}
+
+/* Sub Menus */
+.sub-caret-menu-1 > div {
+    height: 90% !important;
+    font-size: 12px;
+}
+
+.sub-caret-menu-1.caret-menu h4 {
+    margin: -14px 0 0px 12px;
+    padding-bottom: 3px;
+}
+
+.sub-caret-menu-1:not(.closed) > .button {
+    background-color: olivedrab;
+    opacity: .7;
 }
