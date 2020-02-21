@@ -126,6 +126,48 @@ var findDuplicateUuids = function(elements, elementsByUuid, scope){
     return duplicates;
 }
 
+var findDuplicateViewFields = function(useActiveForm, elements, elementsByPath, scope){
+    if(!elements){
+        elements = useActiveForm?  $("#c-forms-layout-elements").childElements().filter(function () { return !$(this).isPlaceholder() }) : $(Cognito.Forms.model.currentForm._Views[0]._Definition)[0].children;        
+    }    
+    if(!elementsByPath)
+        elementsByPath = {};
+    if(!scope)
+        scope = Cognito.Forms.model.currentForm.get_InternalName();
+
+    Array.from(elements).forEach(function(element) {
+        var $element = $(element);
+        var type = element.tagName;
+        if((!useActiveForm && (type === "PROGRESSBAR" || type === "CONTENT"  || type === "PAGEBREAK")) 
+            || (useActiveForm && (element.classList.contains("c-forms-layout-content") || element.classList.contains("c-forms-layout-pagebreak"))))
+            return;
+    
+        var name = element.getAttribute(useActiveForm? "data-field" : "source");
+        var path = scope + "." + name;
+        if(!elementsByPath[path])
+            elementsByPath[path] = [];
+        
+        elementsByPath[path].push({scope, name, element: $element});
+        
+        var childElements = useActiveForm? $element.childElements().filter(function () { return !$(this).isPlaceholder() }) : element.children;
+        if(childElements && childElements.length > 0)
+            elementsByPath = findDuplicateViewFields(useActiveForm, childElements, elementsByPath, scope + "." + name);
+        
+    });
+
+    if(scope !== Cognito.Forms.model.currentForm.get_InternalName())
+        return elementsByPath;
+
+    var duplicates = {};
+    Object.keys(elementsByPath).forEach(function(key){
+        var val = elementsByPath[key];
+        if(val.length > 1)
+            duplicates[key] = val;
+    });
+
+    return duplicates;
+}
+
 var findDuplicateIds = function(fields, fieldsById, scope){
     if(!fields)
         fields = Cognito.Forms.model.currentForm.get_Fields();
@@ -174,7 +216,7 @@ var findGhostFields = function(fields, elements, ghosts, scope){
         var field = fields.first(function(f){ return f.get_InternalName() === name; });
         if(!field){
             var elementType = $element.elementType();
-            if(elementType !== "Layout")
+            if(elementType.type !== "Layout")
                 ghosts[scope + "." + name] = $element;            
         }
         else

@@ -137,3 +137,7 @@ h1, h2, h3, h4 {
 .form.empty .fa-check-circle, .fields.empty .fa-check-circle {
     color: olivedrab;
 }
+
+.correction #correction-troubleshoot {
+    margin-left: 39%;
+}
