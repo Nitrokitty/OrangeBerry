@@ -31,13 +31,7 @@ var intervalId = setInterval(function(){
 // ------------------ FUNCTIONS -------------------
 function loaded () {    
     console.log("loaded")
-    OrangeBerry.activeColor = "pink";
-    OrangeBerry.exactMatch = false;
-    OrangeBerry.include = {}
-    OrangeBerry.include.internalNames = true;
-    OrangeBerry.include.labels = true;
-    OrangeBerry.clear = true;
-
+        
     // Menu Toggle
     $(".caret-menu .button").on("click", function(event) {             
         var target = $(event.currentTarget).parent();        

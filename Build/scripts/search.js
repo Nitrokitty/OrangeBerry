@@ -21,11 +21,20 @@ scripts.forEach(function(scriptName){
 OrangeBerry.onLoad.push(onLoad)
 function onLoad()
 {
+    OrangeBerry.Search = {}
+    OrangeBerry.Search.includeOptions = {}
+    OrangeBerry.Search.includeOptions.activeColor = "pink";
+    OrangeBerry.Search.includeOptions.exactMatch = false;
+    
+    OrangeBerry.Search.includeOptions.internalNames = true;
+    OrangeBerry.Search.includeOptions.labels = true;
+    OrangeBerry.Search.clear = true;
+
     // Set the background of each color on load
     $(".color-select .color").toArray().forEach(function(colorElement){
         var color = colorElement.getAttribute("data-color");
         colorElement.style.backgroundColor = color;
-        if(color === OrangeBerry.activeColor)
+        if(color === OrangeBerry.Search.includeOptions.activeColor)
             $(colorElement).addClass("selected");
     });
 
@@ -44,29 +53,29 @@ function onLoad()
 
     // Color Select
     $(".color-select .color").on("click", function(event){
-        OrangeBerry.activeColor = event.currentTarget.getAttribute("data-color");
+        OrangeBerry.Search.includeOptions.activeColor = event.currentTarget.getAttribute("data-color");
         $(".color-select .color.selected").removeClass("selected");
         $(event.currentTarget).addClass("selected");
     });
 
     // Toggle Exact Match
     $(".exact-match input").on("change", function(event){
-        OrangeBerry.exactMatch = event.currentTarget.checked;
+        OrangeBerry.Search.includeOptions.exactMatch = event.currentTarget.checked;
     });
 
     // Toggle Include Internal Names
     $(".include-internal-names input").on("change", function(event){
-        OrangeBerry.include.internalNames = event.currentTarget.checked;
+        OrangeBerry.Search.includeOptions.internalNames = event.currentTarget.checked;
     });
 
     // Toggle Include Labels
     $(".include-labels input").on("change", function(event){
-        OrangeBerry.include.labels = event.currentTarget.checked;
+        OrangeBerry.Search.includeOptions.labels = event.currentTarget.checked;
     });
 
      // Toggle Clear
      $(".clear input").on("change", function(event){
-        OrangeBerry.clear = event.currentTarget.checked;
+        OrangeBerry.Search.clear = event.currentTarget.checked;
     });
 }
 // ------------------ ------------- -------------------
@@ -82,10 +91,10 @@ function search()
     post("search", {
         by: "OrangeBerryPopup",
         term: OrangeBerry.search,
-        color: OrangeBerry.activeColor,
-        exactMatch: OrangeBerry.exactMatch,
+        color: OrangeBerry.Search.includeOptions.activeColor,
+        exactMatch: OrangeBerry.Search.includeOptions.exactMatch,
         include: OrangeBerry.include,
-        clear: OrangeBerry.clear
+        clear: OrangeBerry.Search.clear
     });       
 }
 // ------------------ ------------- -------------------
