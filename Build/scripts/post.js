@@ -8,5 +8,3 @@ function post(message, data)
         });        
     });        
 }
-
-console.log("script loaded")

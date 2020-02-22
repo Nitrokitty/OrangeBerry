@@ -9,7 +9,7 @@
 
 <body>
   <div class="body">
-    <div class="search">
+    <div class="menu-container search">
       <div id="menu-search" class="caret-menu">
         <div class="button">
           <h4>Search</h4><i class="fas fa-angle-down"></i>
@@ -81,7 +81,7 @@
         </div>
       </div>
     </div>
-    <div class="validation">
+    <div class="menu-container validation">
       <div id="menu-validation" class="caret-menu closed">
         <div class="button">
           <h4>Validation</h4><i class="fas fa-angle-right"></i>
@@ -129,16 +129,115 @@
         </div>
       </div>
     </div>
-    <!-- <div class="correction">
+    <div class="menu-container correction">
       <div id="menu-correction" class="caret-menu closed">
         <div class="button">
           <h4>Correction</h4><i class="fas fa-angle-right"></i>
         </div>
         <div id="target-correction" class="caret-menu-target">
           <button id="correction-troubleshoot">Troubleshoot</button>          
+          <span class="correction-blerb help">Attempt to identify common issues with users' forms including duplicate fields, missing fields, ghost fields and more!</span>
+          <div class="correction-blerb warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Warning: Duration is dependent on form complexity.</span>
+          </div>          
         </div>
       </div>
-    </div> -->
+    </div>
+    <div class="correction-overlay hide">
+      <div class="overlay-container">        
+      </div>
+      <div class="overlay-content">
+        <div class="overlay-title">
+          <h2>Troubleshooting</h2>
+        </div>
+        <i class="fas fa-window-close"></i>
+        <div class="troubleshoot-list">
+          <div class="troubleshoot-list-item hide" check-for="internal-names">
+            <div class="troubleshoot-state checking hide">
+              <i class="fas fa-sync"></i> Checking for duplicate internal names....
+            </div>
+            <div class="troubleshoot-state valid hide">
+              <i class="fas fa-check-circle"></i> No duplicate internal names found
+            </div>
+            <div class="troubleshoot-state invalid hide">
+              <i class="fas fa-exclamation-triangle"></i> Duplicate internal names found
+            </div>
+          </div>
+          <div class="troubleshoot-list-item hide" check-for="element-names">
+            <div class="troubleshoot-state checking hide">
+              <i class="fas fa-sync"></i> Checking for duplicate element names....
+            </div>
+            <div class="troubleshoot-state valid hide">
+              <i class="fas fa-check-circle"></i> No duplicate element names found
+            </div>
+            <div class="troubleshoot-state invalid hide">
+              <i class="fas fa-exclamation-triangle"></i> Duplicate element names found
+            </div>
+          </div>
+          <div class="troubleshoot-list-item hide" check-for="ids">
+            <div class="troubleshoot-state checking hide">
+              <i class="fas fa-sync"></i> Checking for duplicate field ids....
+            </div>
+            <div class="troubleshoot-state valid hide">
+              <i class="fas fa-check-circle"></i> No duplicate field ids found
+            </div>
+            <div class="troubleshoot-state invalid hide">
+              <i class="fas fa-exclamation-triangle"></i> Duplicate field ids found
+            </div>
+          </div>
+          <div class="troubleshoot-list-item hide" check-for="uuids">
+            <div class="troubleshoot-state checking hide">
+              <i class="fas fa-sync"></i> Checking for duplicate element ids....
+            </div>
+            <div class="troubleshoot-state valid hide">
+              <i class="fas fa-check-circle"></i> No duplicate element ids found
+            </div>
+            <div class="troubleshoot-state invalid hide">
+              <i class="fas fa-exclamation-triangle"></i> Duplicate element ids found
+            </div>
+          </div>
+          <div class="troubleshoot-list-item hide" check-for="ghost-fields">
+            <div class="troubleshoot-state checking hide">
+              <i class="fas fa-sync"></i> Checking for missing fields....
+            </div>
+            <div class="troubleshoot-state valid hide">
+              <i class="fas fa-check-circle"></i> No missing fields located
+            </div>
+            <div class="troubleshoot-state invalid hide">
+              <i class="fas fa-exclamation-triangle"></i> Missing fields located
+            </div>
+          </div>
+          <div class="troubleshoot-list-item hide" check-for="ghost-elements">
+            <div class="troubleshoot-state checking hide">
+              <i class="fas fa-sync"></i> Checking for missing elements....
+            </div>
+            <div class="troubleshoot-state valid hide">
+              <i class="fas fa-check-circle"></i> No missing elements located
+            </div>
+            <div class="troubleshoot-state invalid hide">
+              <i class="fas fa-exclamation-triangle"></i> Missing elements located
+            </div>
+          </div>
+        </div>
+        <div class="troubleshoot-issues-options">
+          <div class="no-issues-found hide">
+            <i class="fas fa-clipboard-check"></i>
+            <span>All clear!</span>
+            <button class="close">Close</button>
+          </div>
+          <div class="issues-found hide">
+            <button class="troubleshoot-fix">Fix</button>
+            <button class="troubleshoot-copy">Copy Results</button>
+            <div class="troubleshoot-warning">
+              <i class="fas fa-exclamation-triangle"></i>
+              <span class="warning-literal">Warning</span>
+              <span class="warning-text">Fixing will cause changes to the current form.</span>
+            </div>  
+          </div>
+        </div>
+      </div> 
+    </div>     
+  </div>
 </body>
-
 </html>

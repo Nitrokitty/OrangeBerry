@@ -16,8 +16,7 @@ var interval = setInterval(function(){
     }
 }, 100);
 
-function init() {        
-    this.OrangeBerry.View = new View();
+function init() {            
     this.OrangeBerry.Cognito.init();    
 
     window.addEventListener("message", function(event) {                         
@@ -25,9 +24,8 @@ function init() {
             return;
         }
 
-        if(event.data.change === "internalName" || event.data.change === "name"){
+        if(event.data.change === "internalName" || event.data.change === "name" || event.data.change === "view"){
             this.OrangeBerry.Cognito.update();
-            this.OrangeBerry.View.update();           
         }
 
         if(event.data.msg === "validation")
@@ -82,6 +80,44 @@ function init() {
             var results = OrangeBerry.Cognito.validate(request.data.selector, request.data.force);
             if(results)                            
                 focusInvalidElements(results, request.data.selector, OrangeBerry.Cognito.currentElement || 0);            
+        }
+    );
+
+    chrome.runtime.onMessage.addListener(
+        function(request) {
+            if (request.msg !== "troubleshootStart") 
+                return;
+                        
+            var fields = this.OrangeBerry.Cognito.fields;
+            var view = this.OrangeBerry.Cognito.view.definition;
+            chrome.runtime.sendMessage({
+                msg: "troubleshootData", 
+                data: {
+                    by: "OrangeBerry",
+                    fields: JSON.stringify(fields),
+                    viewDefinition: view,
+                    formName: this.OrangeBerry.Cognito.formName
+                }
+            });       
+        }
+    );
+
+    chrome.runtime.onMessage.addListener(
+        function(request) {
+            if (request.msg !== "troubleshootFix") 
+                return;
+                    
+            console.log(JSON.stringify(request.data));
+            
+            // chrome.runtime.sendMessage({
+            //     msg: "troubleshootData", 
+            //     data: {
+            //         by: "OrangeBerry",
+            //         fields: JSON.stringify(fields),
+            //         viewDefinition: view,
+            //         formName: this.OrangeBerry.Cognito.formName
+            //     }
+            // });       
         }
     );
 }
@@ -205,33 +241,42 @@ function highlightElements (elements, color, clear){
     });
 }
 
-
 class View {
-    __elements = null;
+    __definition = null;
     constructor() {
-        
+        this.init();    
     }
 
-    get elements()
-    {
-        if(!this.__elements)
-            this.__elements = $("#c-forms-layout-elements").children().children().children(".c-forms-layout-element.c-field");
+    init()
+    {        
+        OrangeBerry.Cognito._set("Cognito.View.$Definition.addChanged(function (obj, args) { window.postMessage({ by: 'OrangeBerry', change: 'view', newVal: args.newValue, oldVal: args.oldValue }, '*'); })");        
+    }    
 
-        return this.__elements;
+    get definition()
+    {
+        if(!this.__definition)
+            this.__definition = OrangeBerry.Cognito._get("Cognito.Forms.model.currentForm.get_Views()[0].get_Definition()", false);
+        
+        return this.__definition;
     }
 
     update()
     {
-        this.__elements = null;
+        this.__definition = null;
         console.log("view updated")
-    }
-
+    }  
 }
 
 class CognitoObject
 {
     __form = null;    
     __validation = null;
+    __view = null;
+    __formName = null;
+
+    constructor(){
+
+    }
 
     _get(variable, serialize)
     {
@@ -289,16 +334,31 @@ class CognitoObject
         return this._form !== null;
     }
 
+    get view()
+    {        
+        return this.__view;
+    }
+
+    get formName()
+    {
+        if(!this.__formName)
+            this.__formName = this._get("Cognito.Forms.model.currentForm.get_InternalName()", false);
+        
+        return this.__formName;
+    }
+
     init()
     {
         this._set("Cognito.Field.$InternalName.addChanged(function (obj, args) { window.postMessage({ by: 'OrangeBerry', change: 'internalName', newVal: args.newValue, oldVal: args.oldValue }, '*'); })");
         this._set("Cognito.Field.$Name.addChanged(function (obj, args) { window.postMessage({ by: 'OrangeBerry', change: 'name', newVal: args.newValue, oldVal: args.oldValue }, '*'); })");
+        this.__view = new View();
     }
 
     update()
     {
         this.__form = null;
         this.__validation = null;
+        this.view.update();
         console.log("updated form")
     }
 

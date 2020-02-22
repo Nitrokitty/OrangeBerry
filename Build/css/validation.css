@@ -1,0 +1,91 @@
+.validation .navigation {
+    text-align: center;
+}
+
+.validation .navigation .arrows {
+    margin-left: 28%
+}
+
+.validation .navigation .arrows .fas:first-child {
+    padding-right: 50px;        
+    font-size: 30px;
+    min-height: 50px;
+    padding: 10px;
+    margin: 0 15px 0 0;
+}
+
+.validation .navigation .arrows .fas {
+    padding-right: 50px;    
+    padding-left: 50px;    
+    font-size: 30px;
+    min-height: 50px;
+    padding: 10px;
+    margin: 0 15px 0 15px;
+}
+
+.validation:not(.validating) .navigation .arrows .fas:hover {    
+    color: olivedrab;
+    opacity: .7;
+}
+
+.validation .navigation .arrows .fas.fa-angle-right {
+    padding-left: 30px;
+}
+
+.validation .navigation .arrows .fas.fa-angle-left {
+    padding-right: 20px;
+}
+
+.validation .navigation .re-validate.fa-sync {
+    font-size: 26px;
+}
+
+.validation .navigation .index {
+    padding: 17px 0px 5px 0px;
+    position: relative;
+    bottom: 6px;
+}
+
+.validation .validation-results {
+    margin-top: -16px;
+}
+
+.validation .navigation .begin-validation button {            
+    display: inline;
+    position: fixed;
+    margin-left: -7.8%;
+    z-index: 1;
+}
+
+.validation.validating .navigation .arrows {
+    opacity: .5;
+}
+
+.validation:not(.validating) .navigation .validating.fa-sync {
+    display: none;
+}
+
+.validation.validating .navigation .validating.fa-sync {
+    margin: -50px 0 0 -13%;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    padding-top: 50px;
+    animation: spin 1s linear infinite;
+    color: rebeccapurple;
+    font-size: 50px;
+    z-index: 1;
+}
+
+.validation.validating .navigation .validation-results {
+    opacity: .7;
+}
+
+.form.empty, .fields.empty {
+    margin-top: 30px;
+    font-size: 15px;
+}
+
+.form.empty .fa-check-circle, .fields.empty .fa-check-circle {
+    color: olivedrab;
+}

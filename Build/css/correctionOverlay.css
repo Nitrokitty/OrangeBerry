@@ -1,0 +1,105 @@
+.correction-overlay.hide, .correction-overlay .hide {
+    display: none !important;
+    z-index: -1;
+}
+
+.correction-overlay:not(.hide) .overlay-container {
+    z-index: 1;
+    position: absolute;    
+    top: 0;
+    left: 0;
+    background-color: lightgrey;
+    opacity: 50%;
+}
+
+.correction-overlay .overlay-content
+{ 
+    z-index: 2;
+    margin: 50px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background-color: white;
+    border: solid 5px brown;
+}
+
+.correction-overlay .overlay-title {
+    text-align: center;
+    background-color: brown;
+    opacity: .9;
+    color: white;
+    padding: 1px;
+}
+
+.correction-overlay .fa-window-close {
+    position: absolute;
+    color: lightgray;
+    top: 0;
+    left: 95%;
+}
+
+.correction-overlay .fa-window-close:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.correction-overlay .troubleshoot-list-item {
+    padding: 0 0px 20px 10%;
+}
+
+.correction-overlay .troubleshoot-list-item:first-child {
+    margin-top: 18px;
+}
+
+.correction-overlay .troubleshoot-list-item .invalid i {
+    color: coral;
+}
+.correction-overlay .troubleshoot-list-item .valid i {
+    color: olivedrab;
+}
+
+.correction-overlay .troubleshoot-issues-options {
+    text-align: center;
+    margin-top: -26px;
+}
+
+.correction-overlay .troubleshoot-issues-options button {
+    min-width: 100px;    
+    display: inline;
+    margin-top: 20px;
+    font-size: medium;
+}
+
+.correction-overlay .troubleshoot-issues-options .no-issues-found button {
+    display: block;
+    margin-left: 33%;
+}
+
+.no-issues-found {
+    margin-top: 32px;
+}
+
+.correction-overlay .troubleshoot-issues-options .no-issues-found span {
+    font-size: large;
+}
+
+.correction-overlay .troubleshoot-issues-options .no-issues-found i {
+    color: olivedrab;
+}
+
+.correction-overlay .troubleshoot-issues-options .troubleshoot-warning { 
+    background-color: beige;    
+    font-weight: bold;
+    min-height: 50px;
+    text-align: center;
+    max-width: 80%;
+    margin: 5px 0 0 8%;
+    padding: 3px;
+}
+
+.correction-overlay .troubleshoot-issues-options .troubleshoot-warning i {
+    color: coral;
+}
+.correction-overlay .troubleshoot-issues-options .troubleshoot-warning .warning-text {
+    display: block;
+}

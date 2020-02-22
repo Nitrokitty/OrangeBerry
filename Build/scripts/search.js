@@ -24,8 +24,7 @@ function onLoad()
     OrangeBerry.Search = {}
     OrangeBerry.Search.includeOptions = {}
     OrangeBerry.Search.includeOptions.activeColor = "pink";
-    OrangeBerry.Search.includeOptions.exactMatch = false;
-    
+    OrangeBerry.Search.includeOptions.exactMatch = false;    
     OrangeBerry.Search.includeOptions.internalNames = true;
     OrangeBerry.Search.includeOptions.labels = true;
     OrangeBerry.Search.clear = true;

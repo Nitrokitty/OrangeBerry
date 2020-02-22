@@ -122,6 +122,7 @@ function validate(selector, force)
         console.log("already validating");
         return;
     }
+    
     $validation.addClass("validating");
     $validation.find(".arrows .index")[0].style.display = "none";
     $validation.find(".arrows .re-validate")[0].style.opacity = 0;

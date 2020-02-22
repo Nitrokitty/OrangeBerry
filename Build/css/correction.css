@@ -1,0 +1,21 @@
+.correction #correction-troubleshoot {
+    margin-left: 25%;
+    width: 50%;
+    height: 50px;
+    font-size: larger;
+}
+
+.correction .correction-blerb {
+    display: block;
+    text-align: center;
+    padding: 10px;
+}
+
+.correction .correction-blerb.warning { 
+    background-color: beige;    
+    font-weight: bold;
+}
+
+.correction .warning i {
+    color: coral;
+}

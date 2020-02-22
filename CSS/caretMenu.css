@@ -1,4 +1,12 @@
 
+
+.menu-container:not(:first-child) {
+    margin-left: 5px;
+    margin-top: -20px;
+    padding-bottom: 10px;  
+    margin-bottom: 5px;
+}
+
 .caret-menu .button {
     height: 50px;
     margin: 0px 9px 20px 1px; 

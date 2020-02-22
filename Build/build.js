@@ -1,7 +1,7 @@
 OrangeBerry = { }
 OrangeBerry.onLoad = []
 // ------------------ LOAD SCRIPTS -------------------
-var scripts = ["../Javascript/jquery", "scripts/post", "scripts/chromeRuntime", "scripts/validation", "scripts/search"]
+var scripts = ["../Javascript/jquery", "scripts/post", "scripts/chromeRuntime", "scripts/validation", "scripts/search", "scripts/correction", "scripts/correctionOverlay"]
 var scriptsLoaded = 0;
 var _loadThrottle;
 
@@ -31,13 +31,17 @@ var intervalId = setInterval(function(){
 // ------------------ FUNCTIONS -------------------
 function loaded () {    
     console.log("loaded")
-        
+
     // Menu Toggle
     $(".caret-menu .button").on("click", function(event) {             
         var target = $(event.currentTarget).parent();        
         target.find(".button i")[0].remove();
         var icon = null;
         var isOpening = false;
+
+        if(target.parents(".menu-container").hasClass("inactive"))
+            return;
+
         if(target.hasClass("closed")){
             target.removeClass("closed");            
             icon = $("<i class='fas fa-angle-down'></i>")[0];            
