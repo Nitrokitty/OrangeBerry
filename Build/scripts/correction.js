@@ -27,7 +27,7 @@ function onLoad()
     $("button#correction-troubleshoot").on("click", function(event){       
         var isOpen = toggleCorrectionOverlay();          
         post("troubleshootStart");        
-        // startTroubleshooting();
+        startTroubleshooting();
     });    
 
     $(".correction-overlay .fa-window-close, .correction-overlay .no-issues-found button.close").on("click", function(){
