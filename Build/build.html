@@ -86,11 +86,11 @@
         <div class="button">
           <h4>Validation</h4><i class="fas fa-angle-right"></i>
         </div>
-        <div id="target-validation" class="caret-menu-target">
-          <span class="no-errors">All Clear!</span>
+        <div id="target-validation" class="caret-menu-target">          
           <div class="navigation">
             <i class="validating fas fa-sync"></i>
             <div class="arrows">
+              <span class="no-errors">All Clear!</span>
               <i class="fas fa-angle-left" data-goto="previous-error" aria-hidden="true"></i>
               <span class="index"></span>
               <i class="fas fa-angle-right" data-goto="next-error" aria-hidden="true"></i>
@@ -137,7 +137,7 @@
         </div>
         <div id="target-correction" class="caret-menu-target">
           <button id="correction-troubleshoot">Troubleshoot</button>          
-          <span class="correction-blerb help">Attempt to identify common issues with users' forms including duplicate fields, missing fields, ghost fields and more!</span>
+          <span class="correction-blerb help">Attempt to identify common issues with users' forms including duplicate fields, missing fields, missing elements and more!</span>
           <div class="correction-blerb warning">
             <i class="fas fa-exclamation-triangle"></i>
             <span>Warning: Duration is dependent on form complexity.</span>
@@ -198,7 +198,7 @@
               <i class="fas fa-exclamation-triangle"></i> Duplicate element ids found
             </div>
           </div>
-          <div class="troubleshoot-list-item hide" check-for="ghost-fields">
+          <div class="troubleshoot-list-item hide" check-for="missing-fields">
             <div class="troubleshoot-state checking hide">
               <i class="fas fa-sync"></i> Checking for missing fields....
             </div>
@@ -209,7 +209,7 @@
               <i class="fas fa-exclamation-triangle"></i> Missing fields located
             </div>
           </div>
-          <div class="troubleshoot-list-item hide" check-for="ghost-elements">
+          <div class="troubleshoot-list-item hide" check-for="missing-elements">
             <div class="troubleshoot-state checking hide">
               <i class="fas fa-sync"></i> Checking for missing elements....
             </div>

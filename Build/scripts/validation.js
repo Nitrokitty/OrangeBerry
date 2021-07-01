@@ -154,12 +154,16 @@ chrome.runtime.onMessage.addListener((message, sender, request) => {
     setTimeout(function(){
         var $validation = $(".validation");
         $validation.removeClass("validating");            
-        if(!request.data)
-            $validation.addClass("no-errors");
         $validation.find(".arrows .index")[0].style.display = "";
         $validation.find(".arrows .re-validate")[0].style.opacity = 1;
         var $arrows = $validation.find(".navigation .arrows");
-        $arrows[0].style.marginLeft = index || index === 0? (index >= 9? "24%" : "26%") : "28%";
+        if(!request.data) {
+            $validation.addClass("no-errors");
+            $arrows[0].style.marginLeft = "";
+        }
+        else {        
+            $arrows[0].style.marginLeft = index || index === 0? (index >= 9? "24%" : "26%") : "28%";
+        }
     });
 });
 // ------------------ ------------- -------------------
