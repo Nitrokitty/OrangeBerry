@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://kit.fontawesome.com/f218e6b032.js" crossorigin="anonymous"></script>
+  <script src="build.js"></script>
+  <link rel="stylesheet" href="build.css">
+</head>
+
+<body>
+  <div class="body">
+    <div class="search">
+      <div id="menu-search" class="caret-menu">
+        <div class="button">
+          <h4>Search</h4><i class="fas fa-angle-down"></i>
+        </div>
+        <div id="target-search" class="caret-menu-target">
+          <input id="search-bar" />
+          <button id="search-button">Search</button>
+          <div class="overlay hide">
+            <div>
+              <i class="fas fa-sync"></i>
+            </div>
+          </div>
+          <div class="caret-menu closed">
+            <div class="button">
+              <h4>Advanced</h4><i class="fas fa-angle-right"></i>
+            </div>
+            <div class="caret-menu-target">
+              <div class="row">
+                <div class="key">Highlight Color</div>
+                <div class="color-select value">
+                  <div class="color" data-color="pink"></div>
+                  <div class="color" data-color="lightblue"></div>
+                  <div class="color" data-color="violet"></div>
+                  <div class="color" data-color="purple"></div>
+                  <div class="color" data-color="green"></div>
+                  <div class="color" data-color="yellow"></div>
+                  <div class="color" data-color="red"></div>
+                  <div class="color" data-color="orange"></div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">Exact Match</div>
+                <div class="exact-match value">
+                  <label class="toggle">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">Include Internal Names</div>
+                <div class="include-internal-names value">
+                  <label class="toggle">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">Include Labels</div>
+                <div class="include-labels value">
+                  <label class="toggle">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">Clear Highlights on Search</div>
+                <div class="clear value">
+                  <label class="toggle">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="validation">
+      <div id="menu-validation" class="caret-menu closed">
+        <div class="button">
+          <h4>Validation</h4><i class="fas fa-angle-right"></i>
+        </div>
+        <div id="target-validation" class="caret-menu-target">
+          <div class="navigation">
+            <i class="fas fa-angle-double-left" data-goto="first-error" aria-hidden="true"></i>
+            <i class="fas fa-angle-left" data-goto="previous-error" aria-hidden="true"></i>
+            <span class="index"></span>
+            <i class="fas fa-angle-right" data-goto="next-error" aria-hidden="true"></i>
+            <i class="fas fa-angle-double-right" data-goto="last-error" aria-hidden="true"></i>
+          </div>
+          <div class="validation-results">
+            <table class="selectable">              
+              <tbody></tbody>            
+            </table>
+          </div>          
+          
+       
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

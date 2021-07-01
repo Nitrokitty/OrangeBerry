@@ -59,22 +59,22 @@ function onLoad()
 
     // Toggle Exact Match
     $(".exact-match input").on("change", function(event){
-        OrangeBerry.Search.includeOptions.exactMatch = event.currentTarget.checked;
+        OrangeBerry.Search.includeOptions.exactMatch = !!event.currentTarget.checked;
     });
 
     // Toggle Include Internal Names
     $(".include-internal-names input").on("change", function(event){
-        OrangeBerry.Search.includeOptions.internalNames = event.currentTarget.checked;
+        OrangeBerry.Search.includeOptions.internalNames = !!event.currentTarget.checked;
     });
 
     // Toggle Include Labels
     $(".include-labels input").on("change", function(event){
-        OrangeBerry.Search.includeOptions.labels = event.currentTarget.checked;
+        OrangeBerry.Search.includeOptions.labels = !!event.currentTarget.checked;
     });
 
      // Toggle Clear
      $(".clear input").on("change", function(event){
-        OrangeBerry.Search.clear = event.currentTarget.checked;
+        OrangeBerry.Search.clear = !!event.currentTarget.checked;
     });
 }
 // ------------------ ------------- -------------------
@@ -92,15 +92,19 @@ function search()
         term: OrangeBerry.search,
         color: OrangeBerry.Search.includeOptions.activeColor,
         exactMatch: OrangeBerry.Search.includeOptions.exactMatch,
-        include: OrangeBerry.include,
+        includeLabels: OrangeBerry.Search.includeOptions.labels,
+        includeInternalNames: OrangeBerry.Search.includeOptions.internalNames,
         clear: OrangeBerry.Search.clear
     });       
 }
 // ------------------ ------------- -------------------
 
 // ------------------ EVENTS -------------------
-addPopupListener("searchComplete", function(request){
-    var fields = $.parseJSON(request.data.fields);
+chrome.runtime.onMessage.addListener((message, sender, request) => {    
+    if(message.msg !== 'searchComplete')
+        return;
+        
+    var fields = $.parseJSON(message.data.fields);
     $(".overlay").addClass("hide")
 });
 // ------------------ ------------- -------------------

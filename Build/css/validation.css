@@ -89,3 +89,12 @@
 .form.empty .fa-check-circle, .fields.empty .fa-check-circle {
     color: olivedrab;
 }
+
+.validation .no-errors {
+    display: none;
+}
+
+.validation.no-errors .no-errors {
+    display: block;
+}
+

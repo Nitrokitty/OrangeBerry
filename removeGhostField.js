@@ -35,6 +35,98 @@ var findDuplicateFields = function(fields, scope) {
     return duplicates;    
 }
 
+var findDuplicateIndexes = function(fields, scope) {
+    if(!fields)
+        fields = Cognito.Forms.model.currentForm.get_Fields(); 
+    if(!scope)
+        scope = Cognito.Forms.model.currentForm.get_InternalName();
+
+    var _fields = [];
+    var duplicates = []
+    fields.filter(function(f) { 
+        var index = f.get_Index();
+        if(_fields.indexOf(index) >= 0)
+        { 
+            var key = scope + "." + index;
+            if(Object.keys(duplicates).indexOf(key) < 0) {
+                var item = fields.filter(f => f.get_Index() === index)[0];
+                duplicates[key] = [item];
+            }
+            duplicates[key].push(f);
+        }
+        else
+            _fields.push(index);
+        
+        if(f.get_ChildType())
+        {            
+           var childDuplicates = findDuplicateIndexes(f.get_ChildType().get_Fields(), scope + "." + f.get_InternalName());
+           Object.keys(childDuplicates).forEach(function(key){
+                if(Object.keys(duplicates).indexOf(key) < 0)
+                    duplicates[key] = [];
+                duplicates[key].forEach(function(_f){
+                    if(duplicates[key].filter(function(d){ d.get_Index() === _f.get_Index()}).length === 0)
+                    duplicates[key].push(_f);
+                });
+           });
+        }
+    });
+
+    return duplicates;    
+}
+
+var getContainer = function(paths, scope)
+{    
+    if(typeof(paths) === "string")
+        paths = paths.split('.');
+    
+    if(!scope) {
+        scope = Cognito.Forms.model.currentForm;
+        paths = paths.splice(1);
+    }
+
+    if(paths.length == 0)
+        return scope;
+
+    var _paths = paths.splice(1);
+    var newScope =  scope.get_Fields().filter(f => f.get_InternalName() === paths[0])[0].get_ChildType();
+    if(!newScope)
+        return null;
+
+    return getContainer(_paths,newScope);
+}
+
+var getUniqueIndex = function(fields) {
+    var i = 1;
+    var indexes = fields.map(f => f.get_Index());
+    while(indexes.indexOf(i) >= 0)
+        i++;
+    return i;
+}
+
+var fixDuplicateIndexes = function(duplicates) {
+    
+    Object.keys(duplicates).forEach(function(dupKey) { 
+        var paths = dupKey.split('.');
+        var index = parseInt(paths.splice(-1)[0]);
+        var container = getContainer(paths);
+
+        var fields = container.get_Fields();
+        var _fields = fields.filter(f => true);
+
+        var _duplicates = _fields.filter(f => f.get_Index() === index);
+        _duplicates.splice(1);
+        _duplicates.forEach(dup => {
+            var newIndex = getUniqueIndex(_fields);
+            _fields.first(f => f === dup).set_Index(newIndex);
+        });
+
+        fields.beginUpdate();
+        fields.clear();
+        fields.addRange(_fields);
+        fields.endUpdate();
+    });
+}
+
 var removeDuplicateFields = function(duplicates, fields, scope)
 {    
     if(!fields)

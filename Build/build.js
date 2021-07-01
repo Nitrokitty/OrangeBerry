@@ -31,7 +31,7 @@ var intervalId = setInterval(function(){
 // ------------------ FUNCTIONS -------------------
 function loaded () {    
     console.log("loaded")
-
+    debugger;
     // Menu Toggle
     $(".caret-menu .button").on("click", function(event) {             
         var target = $(event.currentTarget).parent();        
@@ -70,6 +70,6 @@ window.addEventListener("message", function(event) {
 
     var fields = $.parseJSON(event.data.fields);
 
-    $(".overlay").addClass("hide")
+    $(".overlay").addClass("hide");
   }, false);
 // ------------------ ------------- -------------------

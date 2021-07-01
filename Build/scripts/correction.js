@@ -27,7 +27,7 @@ function onLoad()
     $("button#correction-troubleshoot").on("click", function(event){       
         var isOpen = toggleCorrectionOverlay();          
         post("troubleshootStart");        
-        // startTroubleshooting();
+        startTroubleshooting();
     });    
 
     $(".correction-overlay .fa-window-close, .correction-overlay .no-issues-found button.close").on("click", function(){
@@ -350,11 +350,11 @@ var _getChildElements = function ($element, exludePlaceHolders) {
 // ------------------ ------------- -------------------
 
 // ------------------ EVENTS -------------------
-addPopupListener("troubleshootData", function(request){    
-    startTroubleshooting(request.data);
-});
+// addPopupListener("troubleshootData", function(request){    
+//     startTroubleshooting(request.data);
+// });
 
-addPopupListener("troubleshootingComplete", function(request){
+// addPopupListener("troubleshootingComplete", function(request){
    
-});
+// });
 // ------------------ ------------- -------------------
