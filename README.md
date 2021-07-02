@@ -13,3 +13,6 @@ The Sweet Cognito Forms Helper!
 - Select the unzipped OrangeBerry folder (it will look like nothing happened)
 - Refresh page
 - You should now see the OrangeBerry icon with your extensions
+
+
+Updated 2/24/2020

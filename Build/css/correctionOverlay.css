@@ -85,6 +85,7 @@
 
 .correction-overlay .troubleshoot-issues-options .no-issues-found i {
     color: olivedrab;
+    font-size: 20px;
 }
 
 .correction-overlay .troubleshoot-issues-options .troubleshoot-warning { 

@@ -53,11 +53,10 @@ function createTableHeader()
 function recreateTable(validationResults, activeIndex) {
     var $fieldsTable = $(".validation .validation-results table.fields tbody");
     var $formTable = $(".validation .validation-results table.form tbody");
-    
-    if(validationResults){                
-        clearTable($fieldsTable);
-        clearTable($formTable);
-        
+    clearTable($fieldsTable);
+    clearTable($formTable);
+
+    if(validationResults){                                
         $fieldsTable.append(createTableHeader());
         $formTable.append(createTableHeader());
 
@@ -124,6 +123,7 @@ function validate(selector, force)
     }
     
     $validation.addClass("validating");
+    $validation.removeClass("no-errors");
     $validation.find(".arrows .index")[0].style.display = "none";
     $validation.find(".arrows .re-validate")[0].style.opacity = 0;
 
@@ -132,22 +132,38 @@ function validate(selector, force)
 // ------------------ ------------- -------------------
 
 // ------------------ EVENTS -------------------
-addPopupListener("validationComplete", function(request){
-    var results = $.parseJSON(request.data.results);
-    var index = request.data.index;
+chrome.runtime.onMessage.addListener((message, sender, request) => {    
+    
+    if(message.msg !== "validationComplete")
+        return;
 
-    console.log("validationComplete")
-    console.log(results)
-    console.log(index)
+    if(request.data) {
+        var results = $.parseJSON(request.data.results);
+        var index = request.data.index;
 
-    recreateTable(results, index);
+        console.log("validationComplete")
+        console.log(results)
+        console.log(index)
+
+        recreateTable(results, index);
+    } 
+    else {        
+        recreateTable();
+    }
+
     setTimeout(function(){
         var $validation = $(".validation");
         $validation.removeClass("validating");            
         $validation.find(".arrows .index")[0].style.display = "";
         $validation.find(".arrows .re-validate")[0].style.opacity = 1;
         var $arrows = $validation.find(".navigation .arrows");
-        $arrows[0].style.marginLeft = index || index === 0? (index >= 9? "24%" : "26%") : "28%";
+        if(!request.data) {
+            $validation.addClass("no-errors");
+            $arrows[0].style.marginLeft = "";
+        }
+        else {        
+            $arrows[0].style.marginLeft = index || index === 0? (index >= 9? "24%" : "26%") : "28%";
+        }
     });
 });
 // ------------------ ------------- -------------------

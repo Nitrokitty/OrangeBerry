@@ -26,16 +26,15 @@ function onLoad()
     // Validation GOTO
     $("button#correction-troubleshoot").on("click", function(event){       
         var isOpen = toggleCorrectionOverlay();          
-        post("troubleshootStart");        
-        startTroubleshooting();
+        post("troubleshootStart");
     });    
 
     $(".correction-overlay .fa-window-close, .correction-overlay .no-issues-found button.close").on("click", function(){
         var isOpen = toggleCorrectionOverlay();                
     });
 
-    $(".correction-overlay .issues-found button.troubleshoot-fix").on("click", function(){
-        if(OrangeBerry.Correction.Duplicates.requiresFixing){
+    $(".correction-overlay .issues-found button.troubleshoot-fix").on("click", function() {
+        if(OrangeBerry.Correction.Duplicates.requiresFixing) {
             var duplicatesCopy = JSON.parse(JSON.stringify(OrangeBerry.Correction.Duplicates));
             delete duplicatesCopy["fieldsBy"];
             post("troubleshootFix", {
@@ -57,8 +56,8 @@ function onLoad()
                                       key === "elementNames" ? "Duplicate Element Sources (Names)" : 
                                       key === "ids" ? "Duplicate Field Ids" : 
                                       key === "uuids" ? "Duplicate Element UUIDs" : 
-                                      key === "ghostFields" ? "Fields with out View Elements" : 
-                                      key === "ghostElements" ? "Elements with out Fields" : "";
+                                      key === "missingFields" ? "Fields with out View Elements" : 
+                                      key === "missingElements" ? "Elements with out Fields" : "";
                     
                     info += "# " + displayName + "\n";
                     Object.keys(duplicatesCopy[key]).forEach(function(_key){
@@ -92,13 +91,13 @@ var copy = function(text, button)
 }
 
 var startTroubleshooting = function(data)
-{    
-    if(data){
-        OrangeBerry.Correction.fields = JSON.parse(data.fields)
-        OrangeBerry.Correction.viewElements = $(data.viewDefinition).children().toArray();
-        OrangeBerry.Correction.defaultRootName = data.formName;
-    }
-
+{    if(!data)
+        return;
+    
+    OrangeBerry.Correction.fields = JSON.parse(data.fields)
+    OrangeBerry.Correction.viewElements = $(data.viewDefinition).children().toArray();
+    OrangeBerry.Correction.defaultRootName = data.formName;
+    
     OrangeBerry.Correction.Duplicates = {};
     OrangeBerry.Correction.Duplicates.fieldsBy = {};
 
@@ -108,32 +107,28 @@ var startTroubleshooting = function(data)
     OrangeBerry.Correction.Duplicates.elementNames = troubleshootItem($list.find(".troubleshoot-list-item[check-for='element-names']"), findDuplicateElements);
     OrangeBerry.Correction.Duplicates.ids = troubleshootItem($list.find(".troubleshoot-list-item[check-for='ids']"), findDuplicateIds);
     OrangeBerry.Correction.Duplicates.uuids = troubleshootItem($list.find(".troubleshoot-list-item[check-for='uuids']"), findDuplicateUuids)
-    OrangeBerry.Correction.Duplicates.ghostFields = troubleshootItem($list.find(".troubleshoot-list-item[check-for='ghost-fields']"), findGhostFields)
-    OrangeBerry.Correction.Duplicates.ghostElements = troubleshootItem($list.find(".troubleshoot-list-item[check-for='ghost-elements']"), findGhostElements)
+    OrangeBerry.Correction.Duplicates.missingFields = troubleshootItem($list.find(".troubleshoot-list-item[check-for='missing-fields']"), findMissingFields)
+    OrangeBerry.Correction.Duplicates.missingElements = troubleshootItem($list.find(".troubleshoot-list-item[check-for='missing-elements']"), findMissingElements)
     
-    var $options = $(".troubleshoot-issues-options");
-    var $availableOptions = OrangeBerry.Correction.Duplicates.requiresFixing? $options.find(".issues-found") : $options.find(".no-issues-found");
-    $availableOptions.removeClass("hide");
+    var $options = $(".troubleshoot-issues-options");    
+    (OrangeBerry.Correction.Duplicates.requiresFixing? $options.find(".issues-found") : $options.find(".no-issues-found")).removeClass("hide");
+    (!OrangeBerry.Correction.Duplicates.requiresFixing? $options.find(".issues-found") : $options.find(".no-issues-found")).addClass("hide");
 }
 
-i = 0;
 var troubleshootItem = function($itemElement, troubleshootFunction)
 {
     $itemElement.removeClass("hide");
     $checking = $itemElement.find(".troubleshoot-state.checking");
     $checking.removeClass("hide");
     
-    var result = troubleshootFunction();
-    // i++;
-    // var result = i%2 ==1? {"a" : [], "b": []} : {};
-    // var result = {}
-    
+    var result = troubleshootFunction();    
     var invalidItemLength = Object.keys(result).length;
 
     OrangeBerry.Correction.Duplicates.requiresFixing = OrangeBerry.Correction.Duplicates.requiresFixing || Object.keys(result).length > 0;
+    var isValid = invalidItemLength === 0;
     $checking.addClass("hide");
-    $state = $itemElement.find(".troubleshoot-state." + (invalidItemLength === 0? "valid" : "invalid"));
-    $state.removeClass("hide");    
+    $itemElement.find(".troubleshoot-state." + (isValid? "valid" : "invalid")).removeClass("hide");
+    $itemElement.find(".troubleshoot-state." + (isValid? "invalid" : "valid")).addClass("hide");
 
     return result;
 }
@@ -201,44 +196,44 @@ var findDuplicateElements = function(){
     return duplicates;
 }
 
-var findGhostFields = function() {
+var findMissingFields = function() {
     if(!OrangeBerry.Correction.Duplicates.fieldsBy.scope)
         OrangeBerry.Correction.Duplicates.fieldsBy.scope = _aggregateFieldsByScope(OrangeBerry.Correction.fields, OrangeBerry.Correction.defaultRootName, {});
     
     if(!OrangeBerry.Correction.Duplicates.fieldsBy.elementScope)
         OrangeBerry.Correction.Duplicates.fieldsBy.elementScope = _aggregateElementsByScope(OrangeBerry.Correction.viewElements, OrangeBerry.Correction.defaultRootName, {});
     
-    return _findGhostFields(OrangeBerry.Correction.Duplicates.fieldsBy.scope, OrangeBerry.Correction.Duplicates.fieldsBy.elementScope, {});
+    return _findMissingFields(OrangeBerry.Correction.Duplicates.fieldsBy.scope, OrangeBerry.Correction.Duplicates.fieldsBy.elementScope, {});
 }
 
-var findGhostElements = function() {
+var findMissingElements = function() {
     if(!OrangeBerry.Correction.Duplicates.fieldsBy.scope)
         OrangeBerry.Correction.Duplicates.fieldsBy.scope = _aggregateFieldsByScope(OrangeBerry.Correction.fields, OrangeBerry.Correction.defaultRootName, {});
     
     if(!OrangeBerry.Correction.Duplicates.fieldsBy.elementScope)
         OrangeBerry.Correction.Duplicates.fieldsBy.elementScope = _aggregateElementsByScope(OrangeBerry.Correction.viewElements, OrangeBerry.Correction.defaultRootName, {});
     
-    return _findGhostElements(OrangeBerry.Correction.Duplicates.fieldsBy.scope, OrangeBerry.Correction.Duplicates.fieldsBy.elementScope, {});
+    return _findMissingElements(OrangeBerry.Correction.Duplicates.fieldsBy.scope, OrangeBerry.Correction.Duplicates.fieldsBy.elementScope, {});
 }
 
-var _findGhostFields = function(fieldsByScope, elementsByScope, _ghosts){    
+var _findMissingFields = function(fieldsByScope, elementsByScope, missingElements){    
     elementsByScope = Object.keys(elementsByScope);
     Object.keys(fieldsByScope).forEach(function(fieldScope) {                        
         if(elementsByScope.indexOf(fieldScope) < 0)
-            _ghosts[fieldScope] = fieldsByScope[fieldScope];        
+            missingElements[fieldScope] = fieldsByScope[fieldScope];        
     });
     
-    return _ghosts;
+    return missingElements;
 }
 
-var _findGhostElements = function(fieldsByScope, elementsByScope, _ghosts){    
+var _findMissingElements = function(fieldsByScope, elementsByScope, missingElements){    
     fieldsByScope = Object.keys(fieldsByScope);
     Object.keys(elementsByScope).forEach(function(elementScope) {                        
         if(fieldsByScope.indexOf(elementScope) < 0)
-            _ghosts[elementScope] = elementsByScope[elementScope];        
+            missingElements[elementScope] = elementsByScope[elementScope];        
     });
     
-    return _ghosts;
+    return missingElements;
 }
 
 var _aggregateFieldsById = function(fields, _fields){    
@@ -303,7 +298,7 @@ var _aggregateElementsByScope = function(elements, scope, _fields) {
     return _fields;
 }
 
-var _aggregateFieldsByScope = function(fields, scope, _fields) {            
+var _aggregateFieldsByScope = function(fields, scope, _fields) {
     fields.forEach(function(f) { 
         var name = f.InternalName;
         var scopeName = scope + "." + name;
@@ -350,11 +345,14 @@ var _getChildElements = function ($element, exludePlaceHolders) {
 // ------------------ ------------- -------------------
 
 // ------------------ EVENTS -------------------
-addPopupListener("troubleshootData", function(request){    
-    startTroubleshooting(request.data);
+chrome.runtime.onMessage.addListener((message, sender, request) => {
+    if(message.msg !== 'troubleshootData')
+        return;
+
+    startTroubleshooting(message.data);
 });
 
-addPopupListener("troubleshootingComplete", function(request){
+// addPopupListener("troubleshootingComplete", function(request){
    
-});
+// });
 // ------------------ ------------- -------------------

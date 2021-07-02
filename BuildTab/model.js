@@ -38,8 +38,8 @@ function init() {
         }
       }, false);
 
-      chrome.runtime.onMessage.addListener(
-        function(request) {
+      chrome.runtime.onMessage.addListener(          
+        function(request) {            
             if (request.msg === "search") {
                 OrangeBerry.Search = {}
                 OrangeBerry.Search.parentNames = [];
@@ -47,7 +47,10 @@ function init() {
                 OrangeBerry.Search.fields = [];
                 OrangeBerry.Search.color = request.data.color;
                 OrangeBerry.Search.exactMatch = request.data.exactMatch;
-                OrangeBerry.Search.include = request.data.include;
+                OrangeBerry.Search.include = { 
+                    labels: request.data.includeLabels,
+                    internalNames: request.data.includeInternalNames
+                }
 
                 var elements = fieldSearch(request.data.term, this.OrangeBerry.Cognito.fields, OrangeBerry.Search.exactMatch);
                 highlightElements(elements, OrangeBerry.Search.color, request.data.clear);
@@ -65,21 +68,23 @@ function init() {
         }
     );
 
-    chrome.runtime.onMessage.addListener(
-        function(request) {
-            if (request.msg !== "goto") 
+    chrome.runtime.onMessage.addListener((message, sender, request) => {        
+            console.log(message.msg);
+            if (message.msg !== "goto") 
                 return;
-            
-            if(request.data.uuid && request.data.index)
+                        
+            if(message.data.uuid && message.data.index)
             {
-                OrangeBerry.Cognito.focusUuid(request.data.uuid);
-                validationCallback(null, request.data.index);
+                OrangeBerry.Cognito.focusUuid(message.data.uuid);
+                validationCallback(null, message.data.index);
                 return;
             }
 
-            var results = OrangeBerry.Cognito.validate(request.data.selector, request.data.force);
+            var results = OrangeBerry.Cognito.validate(message.data.selector, message.data.force);            
             if(results)                            
-                focusInvalidElements(results, request.data.selector, OrangeBerry.Cognito.currentElement || 0);            
+                focusInvalidElements(results, message.data.selector, OrangeBerry.Cognito.currentElement || 0);            
+            else
+                validationCallback();
         }
     );
 
